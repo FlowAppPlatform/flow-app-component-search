@@ -8,7 +8,8 @@ class SearchComponent extends AppComponent {
   constructor() {
     super();
     const newState = {
-      properties: [
+        readOnly: true,
+        properties: [
         {
           categoryName: 'General',
           categoryDescription: 'Basic settings for the search',
@@ -42,6 +43,11 @@ class SearchComponent extends AppComponent {
     this.state = Object.assign(this.state, newState); // merge two states together, and dont lose any parent state properties.
   }
 
+  handleDbClick = (e) => {
+      e.preventDefault();
+      this.setState(prevState => ({readOnly: !prevState.readOnly}))
+  }
+    
   renderContent() {
     return (
       <div className="search-container">
@@ -85,6 +91,8 @@ class SearchComponent extends AppComponent {
                             name="query"
                             placeholder="Try “Toronto”"
                             role="combobox"
+                            readOnly={this.state.readOnly}
+                            onDoubleClick={this.handleDbClick}
                           />
                         </div>
                       </div>
