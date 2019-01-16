@@ -65,7 +65,7 @@ class SearchComponent extends AppComponent {
                 <div dir="ltr">
                   <div className="search-component-wrapper">
                     <label htmlFor="search-component" className="search-label">
-                      <span className="search-text">Search</span>
+                      <span className="search-text">Search </span>
                       <div className="search-icon">
                         <svg
                           viewBox="0 0 16 16"
