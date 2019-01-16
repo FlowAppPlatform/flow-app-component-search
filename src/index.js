@@ -43,11 +43,18 @@ class SearchComponent extends AppComponent {
     this.state = Object.assign(this.state, newState); // merge two states together, and dont lose any parent state properties.
   }
 
+  componentDidMount(){
+      const interactiveMode = !(this.props.propertyData.interactiveMode === undefined);
+      this.setState({interactiveMode, readOnly: interactiveMode});
+  }
+
   handleDbClick = (e) => {
       e.preventDefault();
-      this.setState(prevState => ({readOnly: !prevState.readOnly}))
+      if(this.state.interactiveMode){
+          this.setState(prevState => ({readOnly: !prevState.readOnly}))
+      }
   }
-    
+
   renderContent() {
     return (
       <div className="search-container">
