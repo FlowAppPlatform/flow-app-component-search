@@ -49,6 +49,13 @@ class SearchComponent extends AppComponent {
         this.setState({interactiveMode, readOnly: interactiveMode});
   }
 
+  handleDbClick = (e) => {
+      e.preventDefault();
+      if(this.state.interactiveMode){
+          this.setState(prevState => ({readOnly: !prevState.readOnly}))
+      }
+  }
+
   renderContent() {
     return (
       <div className="search-container">
