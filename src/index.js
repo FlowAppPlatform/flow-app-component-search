@@ -8,7 +8,9 @@ class SearchComponent extends AppComponent {
   constructor() {
     super();
     const newState = {
-      properties: [
+        interactiveMode: false,
+        readOnly: false,
+        properties: [
         {
           categoryName: 'General',
           categoryDescription: 'Basic settings for the search',
@@ -40,6 +42,18 @@ class SearchComponent extends AppComponent {
     };
 
     this.state = Object.assign(this.state, newState); // merge two states together, and dont lose any parent state properties.
+  }
+
+  componentDidMount(){
+        const interactiveMode = !(this.props.propertyData.interactiveMode === undefined);
+        this.setState({interactiveMode, readOnly: interactiveMode});
+  }
+
+  handleDbClick = (e) => {
+      e.preventDefault();
+      if(this.state.interactiveMode){
+          this.setState(prevState => ({readOnly: !prevState.readOnly}))
+      }
   }
 
   renderContent() {
@@ -85,6 +99,8 @@ class SearchComponent extends AppComponent {
                             name="query"
                             placeholder="Try “Toronto”"
                             role="combobox"
+                            readOnly={this.state.readOnly}
+                            onDoubleClick={this.handleDbClick}
                           />
                         </div>
                       </div>
