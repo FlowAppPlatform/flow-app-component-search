@@ -45,20 +45,28 @@ class SearchComponent extends AppComponent {
   }
 
   componentDidMount(){
-        const interactiveMode = !(this.props.propertyData.interactiveMode === undefined);
-        this.setState({interactiveMode, readOnly: interactiveMode});
+    const interactiveMode = !(this.props.propertyData.interactiveMode === undefined);
+    this.setState({interactiveMode, readOnly: interactiveMode});
   }
 
   handleDbClick = (e) => {
-      e.preventDefault();
-      if(this.state.interactiveMode){
-          this.setState(prevState => ({readOnly: !prevState.readOnly}))
-      }
+    e.preventDefault();
+    if(this.state.interactiveMode){
+        this.setState(prevState => ({readOnly: !prevState.readOnly}))
+    }
+  }
+
+  triggerGraphEvent = () => {
+    const graphId = this.getPropertyData('event');
+    this.getElementProps().onEvent(graphId)
   }
 
   renderContent() {
     return (
-      <div className="search-container">
+      <div 
+        className="search-container"
+        onMouseOver={this.triggerGraphEvent}
+      >
         <div className="search-inner-container">
           <div className="search-innermost-container">
             <div className="search-form-wrapper">
@@ -96,6 +104,9 @@ class SearchComponent extends AppComponent {
                             autoCorrect="off"
                             spellCheck="false"
                             id="search-component"
+                            onMouseOver={this.triggerGraphEvent}
+                            onKeyUp={this.triggerGraphEvent}
+                            onKeyDown={this.triggerGraphEvent}
                             name="query"
                             placeholder="Try “Toronto”"
                             role="combobox"
