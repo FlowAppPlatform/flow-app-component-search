@@ -21,8 +21,29 @@ class SearchComponent extends AppComponent {
           categoryDescription: 'Events for the search',
           properties: [
             {
-              id: 'event',
-              name: 'Events',
+              id: 'load',
+              name: 'Load Event',
+              type: 'graph',
+              options: {},
+              data: null,
+            },
+            {
+              id: 'hover',
+              name: 'Hover Event',
+              type: 'graph',
+              options: {},
+              data: null,
+            },
+            {
+              id: 'keyup',
+              name: 'Keyup Event',
+              type: 'graph',
+              options: {},
+              data: null,
+            },
+            {
+              id: 'keydown',
+              name: 'Keydown Event',
               type: 'graph',
               options: {},
               data: null,
@@ -45,20 +66,29 @@ class SearchComponent extends AppComponent {
   }
 
   componentDidMount(){
-        const interactiveMode = !(this.props.propertyData.interactiveMode === undefined);
-        this.setState({interactiveMode, readOnly: interactiveMode});
+    const interactiveMode = !(this.props.propertyData.interactiveMode === undefined);
+    this.setState({interactiveMode, readOnly: interactiveMode});
+    this.triggerGraphEvent('load')
   }
 
   handleDbClick = (e) => {
-      e.preventDefault();
-      if(this.state.interactiveMode){
-          this.setState(prevState => ({readOnly: !prevState.readOnly}))
-      }
+    e.preventDefault();
+    if(this.state.interactiveMode){
+        this.setState(prevState => ({readOnly: !prevState.readOnly}))
+    }
+  }
+
+  triggerGraphEvent = (eventId) => {
+    const graphId = this.getPropertyData(eventId);
+    this.getElementProps().onEvent(graphId)
   }
 
   renderContent() {
     return (
-      <div className="search-container">
+      <div 
+        className="search-container"
+        onMouseOver={() => this.triggerGraphEvent('hover')}
+      >
         <div className="search-inner-container">
           <div className="search-innermost-container">
             <div className="search-form-wrapper">
@@ -96,6 +126,9 @@ class SearchComponent extends AppComponent {
                             autoCorrect="off"
                             spellCheck="false"
                             id="search-component"
+                            onMouseOver={() => this.triggerGraphEvent('hover')}
+                            onKeyUp={() => this.triggerGraphEvent('keyup')}
+                            onKeyDown={() => this.triggerGraphEvent('keydown')}
                             name="query"
                             placeholder="Try “Toronto”"
                             role="combobox"
